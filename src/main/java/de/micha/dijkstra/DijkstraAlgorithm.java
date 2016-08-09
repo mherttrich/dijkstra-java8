@@ -45,7 +45,7 @@ class DijkstraAlgorithm {
             Node node = getNodeWithMinimumDistance();
             node.setVistited(true);
             nodesToCheck.remove(node);
-            findShortestDistance(node);
+            updateShorterDistanceNeighbours(node);
         }
     }
 
@@ -63,7 +63,7 @@ class DijkstraAlgorithm {
     to neighbour
     for this neighbours we set current node as previousNode and the new distance
      */
-    private void findShortestDistance(Node node) {
+    private void updateShorterDistanceNeighbours(Node node) {
         //TODO getDistanceOfNeigbours called twice
         getNeighbors(node)
                 .stream()
