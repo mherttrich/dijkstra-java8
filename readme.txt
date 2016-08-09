@@ -4,14 +4,12 @@ The Public Transport Routing  I designed as Dijkstra algorithm
 I evalueted A*  and breadth-first search as well. BFS seemed not to fit, because in our case edges are weighted.
 For A* I lacked the heuristic (i.e LatLong).
 
-I know that dijkstra can be implemented with priority queue, but then nearby queries was harder to realize.
-
 
 Dijkstra description
 --------------------
 See the Graph*.pdf
 
-We have a #Set newly discovered nodes #nodesToCheck.
+We have a #PrioQueue of newly discovered nodes #nodesToCheck.
 At the start it contains just "A", the source node.
 The algorithm iterates until all nodes of #nodesToCheck are processed.
 

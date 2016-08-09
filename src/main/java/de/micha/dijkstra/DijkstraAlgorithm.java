@@ -21,14 +21,18 @@ class DijkstraAlgorithm {
     private final List<Node> nodes;
     private final List<Edge> edges;
 
-    // the nodes where we go ahead checking further possible pathes
-    private final Set<Node> nodesToCheck;
+    /*
+    the nodes where we go ahead checking further possible pathes
+    we want the one with the shortest distance to source node
+    */
+    private final PriorityQueue<Node> nodesToCheck;
+
 
     DijkstraAlgorithm(Graph graph) {
         // create a copy of the array so that we can operate on this array
         this.nodes = new ArrayList<>(graph.getNodes());
         this.edges = new ArrayList<>(graph.getEdges());
-        nodesToCheck = new HashSet<>();
+        nodesToCheck = new PriorityQueue<>(Comparator.comparing(Node::getDistance));
     }
 
     void calculatePath(Node source) {
@@ -41,22 +45,13 @@ class DijkstraAlgorithm {
         source.setDistance(0);
         nodesToCheck.add(source);
 
-        while (nodesToCheck.size() > 0) {
-            Node node = getNodeWithMinimumDistance();
+        while (!nodesToCheck.isEmpty()) {
+            Node node = nodesToCheck.poll();
             node.setVistited(true);
-            nodesToCheck.remove(node);
             updateShorterDistanceNeighbours(node);
         }
     }
 
-    /*
-    from the nodesToCheck  get the one with the shortest distance to source node
-    */
-    private Node getNodeWithMinimumDistance() {
-        return nodesToCheck.stream()
-                .sorted(Comparator.comparing(Node::getDistance))
-                .findFirst().orElseThrow(() -> new RuntimeException("Error, no route"));
-    }
 
     /*
     find all unvisited neighbours where (distance of node + distance to neighbours) id smaller than current distance
