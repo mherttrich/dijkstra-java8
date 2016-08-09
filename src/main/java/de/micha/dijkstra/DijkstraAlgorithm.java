@@ -42,7 +42,7 @@ class DijkstraAlgorithm {
         nodesToCheck.add(source);
 
         while (nodesToCheck.size() > 0) {
-            Node node = getMinimumUnvisitedNode();
+            Node node = getNodeWithMinimumDistance();
             node.setVistited(true);
             nodesToCheck.remove(node);
             findShortestDistance(node);
@@ -50,9 +50,9 @@ class DijkstraAlgorithm {
     }
 
     /*
-    from the unvistited Nodes get the one with the smallest distance to source node
+    from the nodesToCheck  get the one with the shortest distance to source node
     */
-    private Node getMinimumUnvisitedNode() {
+    private Node getNodeWithMinimumDistance() {
         return nodesToCheck.stream()
                 .sorted(Comparator.comparing(Node::getDistance))
                 .findFirst().orElseThrow(() -> new RuntimeException("Error, no route"));
