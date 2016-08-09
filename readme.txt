@@ -9,6 +9,8 @@ I know that dijkstra can be implemented with priority queue, but then nearby que
 
 Dijkstra description
 --------------------
+See the Graph*.pdf
+
 We have a #Set newly discovered nodes #nodesToCheck.
 At the start it contains just "A", the source node.
 The algorithm iterates until all nodes of #nodesToCheck are processed.
