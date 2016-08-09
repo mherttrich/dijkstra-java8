@@ -115,8 +115,6 @@ class DijkstraAlgorithm {
      *
      */
     ShortestPathView getShortestPath(Node source, Node destination) {
-        //Optional Path
-
 
         if (destination.getPreviousNode() == null){
             throw new RuntimeException("Error: no Route from "+ source + " to " + destination);
