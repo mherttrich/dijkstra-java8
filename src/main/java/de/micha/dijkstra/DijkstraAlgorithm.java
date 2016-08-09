@@ -22,12 +22,13 @@ class DijkstraAlgorithm {
     private final List<Edge> edges;
 
     // the nodes where we go ahead checking further possible pathes
-    private Set<Node> nodesToCheck;
+    private final Set<Node> nodesToCheck;
 
     DijkstraAlgorithm(Graph graph) {
         // create a copy of the array so that we can operate on this array
         this.nodes = new ArrayList<>(graph.getNodes());
         this.edges = new ArrayList<>(graph.getEdges());
+        nodesToCheck = new HashSet<>();
     }
 
     void calculatePath(Node source) {
@@ -37,8 +38,6 @@ class DijkstraAlgorithm {
             n.setPreviousNode(null);
             n.setDistance(Integer.MAX_VALUE);});
 
-        nodesToCheck = new HashSet<>();
-
         source.setDistance(0);
         nodesToCheck.add(source);
 
@@ -46,7 +45,7 @@ class DijkstraAlgorithm {
             Node node = getMinimumUnvisitedNode();
             node.setVistited(true);
             nodesToCheck.remove(node);
-            findMinimalDistances(node);
+            findShortestDistance(node);
         }
     }
 
@@ -64,8 +63,7 @@ class DijkstraAlgorithm {
     to neighbour
     for this neighbours we set current node as previousNode and the new distance
      */
-
-    private void findMinimalDistances(Node node) {
+    private void findShortestDistance(Node node) {
         //TODO getDistanceOfNeigbours called twice
         getNeighbors(node)
                 .stream()
@@ -92,12 +90,11 @@ class DijkstraAlgorithm {
                 .orElseThrow(() -> new RuntimeException("Error: No route from "+ source + " to " + destination));
     }
 
-
+    /* we want all nodes where the
+         edge starts on current node and
+         end of that edge is a not visited node
+    */
     private List<Node> getNeighbors(Node node) {
-        // we want all nodes where the
-        // edge starts on current node and
-        // end of that edge is a not visited node
-
         return edges.stream()
                 .filter(edge ->
                         edge.getSource().equals(node))
@@ -141,6 +138,5 @@ class DijkstraAlgorithm {
         Collections.reverse(path);
         return new ShortestPathView(path, destination.getDistance());
     }
-
 }
 
