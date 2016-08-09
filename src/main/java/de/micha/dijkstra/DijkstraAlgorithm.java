@@ -116,10 +116,6 @@ class DijkstraAlgorithm {
 
     }
 
-
-
-
-
     /*
      * from destination node we know now  the way back to source by seeing the
      * previousNode and repeading that till we have the source node
