@@ -63,25 +63,10 @@ public class PublicTransportRouting {
     this consumer consumes the splitted input lines and build nodes and edges
      */
     private static Consumer<String[]> processTestData = splitted -> {
-        Node node= null;
-        if (nodes.containsKey(splitted[0])) {
-            node = nodes.get(splitted[0]);
-        }else{
-            node= new Node(splitted[0]);
-            nodes.put(node.getName(), node);
-        }
-
-        Node node2= null;
-        if (nodes.containsKey(splitted[1])) {
-            node2 = nodes.get(splitted[1]);
-        }else{
-            node2= new Node(splitted[1]);
-            nodes.put(node2.getName(), node2);
-        }
-
-        Edge edge = new Edge(node, node2, Integer.parseInt(splitted[2]));
-        //edges.add(edge);
-        node.getEdges().add(edge);
+        Node node1 = nodes.computeIfAbsent(splitted[0], Node::new);
+        Node node2 = nodes.computeIfAbsent(splitted[1], Node::new);
+        Edge edge = new Edge(node1, node2, Integer.parseInt(splitted[2]));
+        node1.getEdges().add(edge);
     };
 
     /*
