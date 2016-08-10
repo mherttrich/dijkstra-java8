@@ -5,8 +5,6 @@ package de.micha.dijkstra;
  * The main code of Dijkstra is in here
  */
 
-import de.micha.dijkstra.domain.Edge;
-import de.micha.dijkstra.domain.Graph;
 import de.micha.dijkstra.domain.Node;
 import de.micha.dijkstra.view.NearPointView;
 import de.micha.dijkstra.view.ShortestPathView;
@@ -19,7 +17,6 @@ class DijkstraAlgorithm {
 
 
     private final List<Node> nodes;
-    private final List<Edge> edges;
 
     /*
     the nodes where we go ahead checking further possible pathes
@@ -28,10 +25,9 @@ class DijkstraAlgorithm {
     private final PriorityQueue<Node> nodesToCheck;
 
 
-    DijkstraAlgorithm(Graph graph) {
+    DijkstraAlgorithm(Map<String, Node> nodes) {
         // create a copy of the array so that we can operate on this array
-        this.nodes = new ArrayList<>(graph.getNodes());
-        this.edges = new ArrayList<>(graph.getEdges());
+        this.nodes = new ArrayList<>(nodes.values());
         nodesToCheck = new PriorityQueue<>(Comparator.comparing(Node::getDistance));
     }
 
@@ -59,43 +55,14 @@ class DijkstraAlgorithm {
     for this neighbours we set current node as previousNode and the new distance
      */
     private void updateShorterDistanceNeighbours(Node node) {
-        //TODO getDistanceOfNeigbours called twice
-        getNeighbors(node)
-                .stream()
-                .filter(neighbour -> neighbour.getDistance() > node.getDistance() + getDistanceOfNeigbours(node, neighbour))
-                .forEach(neighbour -> {
-                            neighbour.setDistance(node.getDistance() + getDistanceOfNeigbours(node, neighbour));
-                            neighbour.setPreviousNode(node);
-                            nodesToCheck.add(neighbour);
-                        }
-                );
-    }
-
-    /*
-     we search the edge between source and destination
-     and return it's weight/ distance
-     */
-    private int getDistanceOfNeigbours(Node source, Node destination) {
-        return edges.stream()
-                .filter(
-                        e -> e.getSource().equals(source)
-                                && e.getDestination().equals(destination))
-                .map(Edge::getWeight)
-                .findAny() //should be just one
-                .orElseThrow(() -> new RuntimeException("Error: No route from "+ source + " to " + destination));
-    }
-
-    /* we want all nodes where the
-         edge starts on current node and
-         end of that edge is a not visited node
-    */
-    private List<Node> getNeighbors(Node node) {
-        return edges.stream()
-                .filter(edge ->
-                        edge.getSource().equals(node))
-                .map(Edge::getDestination)
-                .filter(n -> !n.isVisited())
-                .collect(Collectors.toList());
+        node.getEdges().stream()
+                .filter(e -> !e.getDestination().isVisited())
+                .filter(e -> e.getDestination().getDistance() > node.getDistance() + e.getWeight())
+                .forEach(e -> {
+                    e.getDestination().setDistance(node.getDistance() + e.getWeight());
+                    e.getDestination().setPreviousNode(node);
+                    nodesToCheck.add(e.getDestination());
+                });
     }
 
     List<NearPointView> getNeighboursNearby(int dist) {
@@ -105,7 +72,6 @@ class DijkstraAlgorithm {
                 .sorted(Comparator.comparing(Node::getDistance))
                 .map(n -> new NearPointView(n.getName(), n.getDistance()))
                 .collect(Collectors.toList());
-
     }
 
     /*

@@ -1,7 +1,6 @@
 package de.micha.dijkstra;
 
 import de.micha.dijkstra.domain.Edge;
-import de.micha.dijkstra.domain.Graph;
 import de.micha.dijkstra.domain.Node;
 import de.micha.dijkstra.view.NearPointView;
 import de.micha.dijkstra.view.ShortestPathView;
@@ -28,7 +27,6 @@ public class PublicTransportRouting {
         it is still differnt threads. If parallel processing is wanted, rather turn this to class variables
      */
     private static Map<String, Node> nodes = new HashMap<>();
-    private static List<Edge> edges = new ArrayList<>();
     private static DijkstraAlgorithm dijkstraAlgorithm;
 
 
@@ -45,8 +43,7 @@ public class PublicTransportRouting {
         //read the n lines of test data and process it with processTestData consumer
         parseAndProcessInputData(readNLines(in, amountLines).stream(), processTestData);
 
-        Graph graph = new Graph(new ArrayList<>(nodes.values()), edges);
-        dijkstraAlgorithm = new DijkstraAlgorithm(graph);
+        dijkstraAlgorithm = new DijkstraAlgorithm(nodes);
 
         /*
         assume we have 2 lines with queries (like in the example), then I finish reading from STDIN
@@ -66,13 +63,25 @@ public class PublicTransportRouting {
     this consumer consumes the splitted input lines and build nodes and edges
      */
     private static Consumer<String[]> processTestData = splitted -> {
-        if (!nodes.containsKey(splitted[0])){
-            nodes.put(splitted[0], new Node(splitted[0]));
+        Node node= null;
+        if (nodes.containsKey(splitted[0])) {
+            node = nodes.get(splitted[0]);
+        }else{
+            node= new Node(splitted[0]);
+            nodes.put(node.getName(), node);
         }
-        if (!nodes.containsKey(splitted[1])) {
-            nodes.put(splitted[1], new Node(splitted[1]));
+
+        Node node2= null;
+        if (nodes.containsKey(splitted[1])) {
+            node2 = nodes.get(splitted[1]);
+        }else{
+            node2= new Node(splitted[1]);
+            nodes.put(node2.getName(), node2);
         }
-        edges.add(new Edge(nodes.get(splitted[0]), nodes.get(splitted[1]), Integer.parseInt(splitted[2])));
+
+        Edge edge = new Edge(node, node2, Integer.parseInt(splitted[2]));
+        //edges.add(edge);
+        node.getEdges().add(edge);
     };
 
     /*
