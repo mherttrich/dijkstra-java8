@@ -50,12 +50,8 @@ public class PublicTransportRouting {
         this is because we need the main method to return to be able to untit test
         other possibility would be to terminate STDIN by Ctrl D or "quit"
          */
-        List<String> lines = readNLines(in, 2);
-        try {
-            parseAndProcessInputData(lines.stream(), processQueries);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        parseAndProcessInputData(readNLines(in, 1).stream(), processQueries);
+        parseAndProcessInputData(readNLines(in, 1).stream(), processQueries);
     }
 
 
