@@ -4,7 +4,7 @@ package de.micha.dijkstra.domain;
  * Created by micha on 06.08.16.
  * Class to store edge information used by dijkstra
  */
-public class Edge  {
+public class Edge {
     private final Node source;
     private final Node destination;
     private final int weight;
@@ -22,6 +22,7 @@ public class Edge  {
     public Node getSource() {
         return source;
     }
+
     public int getWeight() {
         return weight;
     }

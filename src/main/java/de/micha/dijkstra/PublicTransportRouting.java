@@ -30,7 +30,7 @@ public class PublicTransportRouting {
     private static DijkstraAlgorithm dijkstraAlgorithm;
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         Integer amountLines;
         try {
@@ -74,14 +74,14 @@ public class PublicTransportRouting {
      */
     private static Consumer<String[]> processQueries = splitted -> {
 
-        if (splitted[0].equals("route")){
+        if (splitted[0].equals("route")) {
             //build up shortest path from source node to all possible destination nodes
             dijkstraAlgorithm.calculatePath(nodes.get(splitted[1]));
             //get shortest path to B
             ShortestPathView shortestPath = dijkstraAlgorithm.getShortestPath(nodes.get(splitted[1]), nodes.get(splitted[2]));
             System.out.println(shortestPath);
 
-        }else if(splitted[0].equals("nearby")){
+        } else if (splitted[0].equals("nearby")) {
             //build up shortest path from source node to all possible destination nodes
             dijkstraAlgorithm.calculatePath(nodes.get(splitted[1]));
             //get all near by nodes
@@ -95,7 +95,7 @@ public class PublicTransportRouting {
     };
 
 
-    private static void parseAndProcessInputData(Stream<String> lines, Consumer<String[]> consumer){
+    private static void parseAndProcessInputData(Stream<String> lines, Consumer<String[]> consumer) {
         // split on one or more spaces, arrow, colon and comma and filter out any faulty lines
         lines.map(l -> l.split("\\s*(\\s+|->|:|,)\\s*"))
                 .filter(check)
@@ -106,9 +106,9 @@ public class PublicTransportRouting {
     private static Predicate<String[]> check = s -> s.length == 3;
 
     // simply reading STDIN lines to List
-    private static List<String> readNLines(BufferedReader in, int n){
+    private static List<String> readNLines(BufferedReader in, int n) {
         List<String> lines = new ArrayList<>();
-        for (int i = 0; i < n ; i++) {
+        for (int i = 0; i < n; i++) {
             try {
                 lines.add(in.readLine());
             } catch (IOException e) {

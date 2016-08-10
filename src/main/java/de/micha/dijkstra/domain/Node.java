@@ -59,6 +59,6 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node: "+ name;
+        return "Node: " + name;
     }
 }

@@ -36,7 +36,8 @@ class DijkstraAlgorithm {
         nodes.forEach(n -> {
             n.setVistited(false);
             n.setPreviousNode(null);
-            n.setDistance(Integer.MAX_VALUE);});
+            n.setDistance(Integer.MAX_VALUE);
+        });
 
         source.setDistance(0);
         nodesToCheck.add(source);
@@ -82,8 +83,8 @@ class DijkstraAlgorithm {
      */
     ShortestPathView getShortestPath(Node source, Node destination) {
 
-        if (destination.getPreviousNode() == null){
-            throw new RuntimeException("Error: no Route from "+ source + " to " + destination);
+        if (destination.getPreviousNode() == null) {
+            throw new RuntimeException("Error: no Route from " + source + " to " + destination);
         }
         LinkedList<Node> path = new LinkedList<>();
         Node current = destination;
