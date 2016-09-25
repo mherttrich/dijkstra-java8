@@ -1,8 +1,5 @@
-The Public Transport Routing  I designed as Dijkstra algorithm
+The  Routing  I designed as Dijkstra algorithm
 (I assumed it is mainly represents a "shortest Path in a directed weighted graph")
-
-I evalueted A*  and breadth-first search as well. BFS seemed not to fit, because in our case edges are weighted.
-For A* I lacked the heuristic (i.e LatLong).
 
 
 Dijkstra description
