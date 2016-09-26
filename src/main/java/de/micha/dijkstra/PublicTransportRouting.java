@@ -23,8 +23,8 @@ import java.util.stream.Stream;
  */
 public class PublicTransportRouting {
 
-    /* I assume that its just one process, even if this is started twice in parallel
-        it is still differnt threads. If parallel processing is wanted, rather turn this to class variables
+    /*
+    this class is not nice, rather uggly, I am going to refactore it.
      */
     private static Map<String, Node> nodes = new HashMap<>();
     private static DijkstraAlgorithm dijkstraAlgorithm;
