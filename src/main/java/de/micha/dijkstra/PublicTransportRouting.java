@@ -4,8 +4,13 @@ import de.micha.dijkstra.domain.Edge;
 import de.micha.dijkstra.domain.Node;
 import de.micha.dijkstra.view.NearPointView;
 import de.micha.dijkstra.view.ShortestPathView;
+import org.codehaus.jackson.map.ObjectMapper;
 
-import java.util.*;
+import java.io.IOException;
+import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -17,22 +22,27 @@ public class PublicTransportRouting {
     private static Map<String, Node> nodes = new LinkedHashMap<>();
     private static DijkstraAlgorithm dijkstraAlgorithm;
 
-    static{
-        //TODO load from JSON conf file
-        loadGraph(new Node("A"), new Node("B"), 240);
-        loadGraph(new Node("A"), new Node("C"), 70);
-        loadGraph(new Node("A"), new Node("D"), 120);
-        loadGraph(new Node("C"), new Node("B"), 60);
-        loadGraph(new Node("D"), new Node("E"), 480);
-        loadGraph(new Node("C"), new Node("E"), 240);
-        loadGraph(new Node("B"), new Node("E"), 210);
-        loadGraph(new Node("E"), new Node("A"), 300);
-        dijkstraAlgorithm = new DijkstraAlgorithm(nodes);
+    static {
+        ObjectMapper mapper = new ObjectMapper();
+        URL systemResource = ClassLoader.getSystemResource("graph.json");
+        try {
+            List<List<String>> edges = mapper.readValue(systemResource, List.class);
+            edges.forEach(e -> {
+                loadGraph(e.get(0), e.get(1), Integer.parseInt(e.get(2)));
+            });
+
+            dijkstraAlgorithm = new DijkstraAlgorithm(nodes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+
     }
 
-    private static void loadGraph(Node n1, Node n2, int distance) {
-        Node node1 = nodes.computeIfAbsent(n1.getName(), Node::new);
-        Node node2 = nodes.computeIfAbsent(n2.getName(), Node::new);
+    private static void loadGraph(String n1, String n2, int distance) {
+        Node node1 = nodes.computeIfAbsent(n1, Node::new);
+        Node node2 = nodes.computeIfAbsent(n2, Node::new);
 
         Edge edge = new Edge(node1, node2, distance);
         node1.getEdges().add(edge);
