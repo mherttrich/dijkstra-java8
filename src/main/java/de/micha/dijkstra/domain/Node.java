@@ -11,7 +11,7 @@ public class Node {
 
 
     final private String name;
-    private Set<Edge> edges;
+    private final Set<Edge> edges;
     private Node previousNode;
     // the updated distance (as time) to the source node (can be over several edges)
     private Integer distance;

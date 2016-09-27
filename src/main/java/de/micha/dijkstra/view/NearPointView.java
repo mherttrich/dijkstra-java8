@@ -5,8 +5,8 @@ package de.micha.dijkstra.view;
  * Viewclass to encapsulate a result of a near neighbour search
  */
 public class NearPointView {
-    private String nodeName;
-    private int distance;
+    private final String nodeName;
+    private final int distance;
 
     public NearPointView(String nodeName, int distance) {
         this.nodeName = nodeName;

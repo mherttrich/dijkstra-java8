@@ -19,13 +19,14 @@ import java.util.stream.Collectors;
  */
 public class PublicTransportRouting {
 
-    private static Map<String, Node> nodes = new LinkedHashMap<>();
-    private static DijkstraAlgorithm dijkstraAlgorithm;
+    private static final Map<String, Node> nodes = new LinkedHashMap<>();
+    private static final DijkstraAlgorithm dijkstraAlgorithm;
 
     static {
         ObjectMapper mapper = new ObjectMapper();
         URL systemResource = ClassLoader.getSystemResource("graph.json");
         try {
+            @SuppressWarnings("unchecked")
             List<List<String>> edges = mapper.readValue(systemResource, List.class);
             edges.forEach(e -> {
                 loadGraph(e.get(0), e.get(1), Integer.parseInt(e.get(2)));

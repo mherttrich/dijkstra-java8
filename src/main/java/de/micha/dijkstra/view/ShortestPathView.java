@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
  * Viewclass to encapsulate a result of a shortest path search
  */
 public class ShortestPathView {
-    private List<Node> path;
-    private int time;
+    private final List<Node> path;
+    private final int time;
 
     public ShortestPathView(List<Node> path, int time) {
         this.path = path;
