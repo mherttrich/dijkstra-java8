@@ -5,8 +5,7 @@ import de.micha.dijkstra.domain.Node;
 import de.micha.dijkstra.view.NearPointView;
 import de.micha.dijkstra.view.ShortestPathView;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -15,22 +14,11 @@ import java.util.stream.Collectors;
  */
 public class PublicTransportRouting {
 
-    /*
-    this class is not nice, rather uggly, I am going to refactore it.
-
-
-    ...in progress
-     */
-
-
-    //rather Set  ??
-    private static Map<String, Node> nodes = new HashMap<>();
+    private static Map<String, Node> nodes = new LinkedHashMap<>();
     private static DijkstraAlgorithm dijkstraAlgorithm;
 
     static{
-
         //TODO load from JSON conf file
-
         loadGraph(new Node("A"), new Node("B"), 240);
         loadGraph(new Node("A"), new Node("C"), 70);
         loadGraph(new Node("A"), new Node("D"), 120);
@@ -42,17 +30,15 @@ public class PublicTransportRouting {
         dijkstraAlgorithm = new DijkstraAlgorithm(nodes);
     }
 
-
     private static void loadGraph(Node n1, Node n2, int distance) {
         Node node1 = nodes.computeIfAbsent(n1.getName(), Node::new);
         Node node2 = nodes.computeIfAbsent(n2.getName(), Node::new);
+
         Edge edge = new Edge(node1, node2, distance);
         node1.getEdges().add(edge);
     }
 
 
-
-    //rather Node n, int d as signature
     public String route(String node, String node2) {
         //build up shortest path from source node to all possible destination nodes
         dijkstraAlgorithm.calculatePath(nodes.get(node));
@@ -62,15 +48,14 @@ public class PublicTransportRouting {
 
     }
 
-    public String nearby(String node, String dist) {
+    //rather Node n, int d as signature
+    public String nearby(String node, int dist) {
         //build up shortest path from source node to all possible destination nodes
         dijkstraAlgorithm.calculatePath(nodes.get(node));
         //get all near by nodes
-        return dijkstraAlgorithm.getNeighboursNearby(Integer.parseInt(dist))
+        return dijkstraAlgorithm.getNeighboursNearby(dist)
                 .stream()
                 .map(NearPointView::toString)
                 .collect(Collectors.joining(", "));
     }
-
-
 }

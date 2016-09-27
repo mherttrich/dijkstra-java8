@@ -14,7 +14,7 @@ public class DevelopTest {
     public void testExcute() throws IOException {
         PublicTransportRouting publicTransportRouting = new PublicTransportRouting();
         System.out.println(publicTransportRouting.route("A","B"));
-        System.out.println(publicTransportRouting.nearby("A","130"));
+        System.out.println(publicTransportRouting.nearby("A", 130));
     }
 }
 

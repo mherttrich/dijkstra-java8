@@ -15,6 +15,6 @@ public class TestDijkstra {
     public void testExcute() throws IOException {
         PublicTransportRouting routing = new PublicTransportRouting();
         assertEquals("A -> C -> B: 130", routing.route("A","B"));
-        assertEquals("C: 70, D: 120, B: 130",routing.nearby("A","130"));
+        assertEquals("C: 70, D: 120, B: 130",routing.nearby("A", 130));
     }
 }
